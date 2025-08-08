@@ -72,7 +72,7 @@ CloseButton.TextColor3 = Color3.new(1, 1, 1)
 CloseButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
 CloseButton.BorderSizePixel = 0
 CloseButton.ZIndex = 3
-Instance.new("UICorner", CloseButton).CornerRadius = UDim.new(0, 😎
+Instance.new("UICorner", CloseButton).CornerRadius = UDim.new(0, 8)
 Instance.new("UIStroke", CloseButton).Thickness = 1
 CloseButton.Parent = TopBar
 CloseButton.MouseButton1Click:Connect(function()
@@ -90,7 +90,7 @@ MinimizeButton.TextColor3 = Color3.new(1, 1, 1)
 MinimizeButton.BackgroundColor3 = Color3.fromRGB(60, 60, 180)
 MinimizeButton.BorderSizePixel = 0
 MinimizeButton.ZIndex = 3
-Instance.new("UICorner", MinimizeButton).CornerRadius = UDim.new(0, 😎
+Instance.new("UICorner", MinimizeButton).CornerRadius = UDim.new(0, 8)
 Instance.new("UIStroke", MinimizeButton).Thickness = 1
 MinimizeButton.Parent = TopBar
 
@@ -155,7 +155,7 @@ UsernameBox.Position = UDim2.new(0.05, 0, 0, 150)
 UsernameBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 UsernameBox.TextColor3 = Color3.new(1, 1, 1)
 UsernameBox.ClearTextOnFocus = false
-Instance.new("UICorner", UsernameBox).CornerRadius = UDim.new(0, 😎
+Instance.new("UICorner", UsernameBox).CornerRadius = UDim.new(0, 8)
 Instance.new("UIStroke", UsernameBox).Transparency = 0.8
 UsernameBox.Parent = ContentFrame
 
@@ -179,7 +179,7 @@ FreezeButton.Font = Enum.Font.GothamBold
 FreezeButton.TextSize = 14
 FreezeButton.TextColor3 = Color3.new(1, 1, 1)
 FreezeButton.BackgroundColor3 = Color3.fromRGB(200, 150, 50)
-Instance.new("UICorner", FreezeButton).CornerRadius = UDim.new(0, 😎
+Instance.new("UICorner", FreezeButton).CornerRadius = UDim.new(0, 8)
 Instance.new("UIStroke", FreezeButton).Transparency = 0.8
 FreezeButton.Parent = ButtonContainer
 
@@ -191,7 +191,7 @@ ForceTradeButton.Font = Enum.Font.GothamBold
 ForceTradeButton.TextSize = 14
 ForceTradeButton.TextColor3 = Color3.new(1, 1, 1)
 ForceTradeButton.BackgroundColor3 = Color3.fromRGB(150, 100, 200)
-Instance.new("UICorner", ForceTradeButton).CornerRadius = UDim.new(0, 😎
+Instance.new("UICorner", ForceTradeButton).CornerRadius = UDim.new(0, 8)
 Instance.new("UIStroke", ForceTradeButton).Transparency = 0.8
 ForceTradeButton.Parent = ButtonContainer
 
@@ -203,7 +203,7 @@ AutoAcceptButton.Font = Enum.Font.GothamBold
 AutoAcceptButton.TextSize = 14
 AutoAcceptButton.TextColor3 = Color3.new(1, 1, 1)
 AutoAcceptButton.BackgroundColor3 = Color3.fromRGB(50, 180, 100)
-Instance.new("UICorner", AutoAcceptButton).CornerRadius = UDim.new(0, 😎
+Instance.new("UICorner", AutoAcceptButton).CornerRadius = UDim.new(0, 8)
 Instance.new("UIStroke", AutoAcceptButton).Transparency = 0.8
 AutoAcceptButton.Parent = ButtonContainer
 
