@@ -6,6 +6,7 @@ local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local tweenService = game:GetService("TweenService")
 local userInput = game:GetService("UserInputService")
+local StarterGui = game:GetService("StarterGui")
 
 --// Screen GUI
 local TradeAssistGUI = Instance.new("ScreenGui")
@@ -30,25 +31,25 @@ Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 12)
 local dragging = false
 local dragStart, startPos
 local function updateDrag(input)
-    local delta = input.Position - dragStart
-    MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	local delta = input.Position - dragStart
+	MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 end
 MainFrame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch then
-        dragging = true
-        dragStart = input.Position
-        startPos = MainFrame.Position
-    end
+	if input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = MainFrame.Position
+	end
 end)
 MainFrame.InputChanged:Connect(function(input)
-    if dragging and input.UserInputType == Enum.UserInputType.Touch then
-        updateDrag(input)
-    end
+	if dragging and input.UserInputType == Enum.UserInputType.Touch then
+		updateDrag(input)
+	end
 end)
 userInput.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch then
-        dragging = false
-    end
+	if input.UserInputType == Enum.UserInputType.Touch then
+		dragging = false
+	end
 end)
 
 --// Top Bar
@@ -76,7 +77,7 @@ Instance.new("UICorner", CloseButton).CornerRadius = UDim.new(0, 8)
 Instance.new("UIStroke", CloseButton).Thickness = 1
 CloseButton.Parent = TopBar
 CloseButton.MouseButton1Click:Connect(function()
-    TradeAssistGUI:Destroy()
+	TradeAssistGUI:Destroy()
 end)
 
 -- Minimize Button
@@ -97,38 +98,48 @@ MinimizeButton.Parent = TopBar
 local originalSize = MainFrame.Size
 local minimized = false
 
--- Content Frame
-local ContentFrame = Instance.new("Frame")
+-- Scrollable Content Frame
+local ContentFrame = Instance.new("ScrollingFrame")
 ContentFrame.Name = "ContentFrame"
 ContentFrame.Size = UDim2.new(1, 0, 1, -40)
 ContentFrame.Position = UDim2.new(0, 0, 0, 40)
 ContentFrame.BackgroundTransparency = 1
 ContentFrame.ClipsDescendants = true
+ContentFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+ContentFrame.ScrollBarThickness = 6
+ContentFrame.ScrollBarImageColor3 = Color3.fromRGB(120, 120, 120)
+ContentFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 ContentFrame.Parent = MainFrame
 
+-- Layout for ContentFrame
+local contentLayout = Instance.new("UIListLayout", ContentFrame)
+contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+contentLayout.Padding = UDim.new(0, 10)
+contentLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
 MinimizeButton.MouseButton1Click:Connect(function()
-    local tweenInfo = TweenInfo.new(0.25)
-    if not minimized then
-        tweenService:Create(ContentFrame, tweenInfo, {Size = UDim2.new(1, 0, 0, 0)}):Play()
-        tweenService:Create(MainFrame, tweenInfo, {Size = UDim2.new(originalSize.X.Scale, originalSize.X.Offset, 0, 40)}):Play()
-        MinimizeButton.Text = "+"
-        minimized = true
-    else
-        tweenService:Create(MainFrame, tweenInfo, {Size = originalSize}):Play()
-        tweenService:Create(ContentFrame, tweenInfo, {Size = UDim2.new(1, 0, 1, -40)}):Play()
-        MinimizeButton.Text = "-"
-        minimized = false
-    end
+	local tweenInfo = TweenInfo.new(0.25)
+	if not minimized then
+		tweenService:Create(ContentFrame, tweenInfo, {Size = UDim2.new(1, 0, 0, 0)}):Play()
+		tweenService:Create(MainFrame, tweenInfo, {Size = UDim2.new(originalSize.X.Scale, originalSize.X.Offset, 0, 40)}):Play()
+		MinimizeButton.Text = "+"
+		minimized = true
+	else
+		tweenService:Create(MainFrame, tweenInfo, {Size = originalSize}):Play()
+		tweenService:Create(ContentFrame, tweenInfo, {Size = UDim2.new(1, 0, 1, -40)}):Play()
+		MinimizeButton.Text = "-"
+		minimized = false
+	end
 end)
 
 -- Profile Image Frame
 local PlayerIconFrame = Instance.new("Frame")
 PlayerIconFrame.AnchorPoint = Vector2.new(0.5, 0)
 PlayerIconFrame.Size = UDim2.new(0, 130, 0, 130)
-PlayerIconFrame.Position = UDim2.new(0.5, 0, 0, 10)
 PlayerIconFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 PlayerIconFrame.BorderSizePixel = 0
 PlayerIconFrame.ClipsDescendants = true
+PlayerIconFrame.LayoutOrder = 1
 PlayerIconFrame.Parent = ContentFrame
 Instance.new("UICorner", PlayerIconFrame).CornerRadius = UDim.new(1, 0)
 Instance.new("UIStroke", PlayerIconFrame).Thickness = 1.5
@@ -140,7 +151,7 @@ PlayerIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 PlayerIcon.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
 PlayerIcon.BorderSizePixel = 0
 PlayerIcon.ClipsDescendants = true
-PlayerIcon.Image = "rbxassetid://0" -- default blank
+PlayerIcon.Image = "rbxassetid://0"
 PlayerIcon.Parent = PlayerIconFrame
 Instance.new("UICorner", PlayerIcon).CornerRadius = UDim.new(1, 0)
 
@@ -151,10 +162,10 @@ UsernameBox.PlaceholderText = "Enter Username"
 UsernameBox.Font = Enum.Font.GothamBold
 UsernameBox.TextSize = 14
 UsernameBox.Size = UDim2.new(0.9, 0, 0, 40)
-UsernameBox.Position = UDim2.new(0.05, 0, 0, 150)
 UsernameBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 UsernameBox.TextColor3 = Color3.new(1, 1, 1)
 UsernameBox.ClearTextOnFocus = false
+UsernameBox.LayoutOrder = 2
 Instance.new("UICorner", UsernameBox).CornerRadius = UDim.new(0, 8)
 Instance.new("UIStroke", UsernameBox).Transparency = 0.8
 UsernameBox.Parent = ContentFrame
@@ -162,8 +173,8 @@ UsernameBox.Parent = ContentFrame
 -- Action Buttons Container
 local ButtonContainer = Instance.new("Frame")
 ButtonContainer.Size = UDim2.new(1, 0, 0, 120)
-ButtonContainer.Position = UDim2.new(0, 0, 0, 220)
 ButtonContainer.BackgroundTransparency = 1
+ButtonContainer.LayoutOrder = 3
 ButtonContainer.Parent = ContentFrame
 
 local ButtonLayout = Instance.new("UIListLayout", ButtonContainer)
@@ -224,54 +235,54 @@ CreditLabel.Parent = MainFrame
 
 -- Button Events
 FreezeButton.MouseButton1Click:Connect(function()
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Trade Assist",
-        Text = "Trade frozen!",
-        Duration = 2,
-    })
+	StarterGui:SetCore("SendNotification", {
+		Title = "Trade Assist",
+		Text = "Trade frozen!",
+		Duration = 2,
+	})
 end)
 
 ForceTradeButton.MouseButton1Click:Connect(function()
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Trade Assist",
-        Text = "Force trade triggered!",
-        Duration = 2,
-    })
+	StarterGui:SetCore("SendNotification", {
+		Title = "Trade Assist",
+		Text = "Force trade triggered!",
+		Duration = 2,
+	})
 end)
 
 AutoAcceptButton.MouseButton1Click:Connect(function()
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Trade Assist",
-        Text = "Auto accept triggered!",
-        Duration = 2,
-    })
+	StarterGui:SetCore("SendNotification", {
+		Title = "Trade Assist",
+		Text = "Auto accept triggered!",
+		Duration = 2,
+	})
 end)
 
 -- Username input with profile picture loading
 UsernameBox.FocusLost:Connect(function(enterPressed)
-    if enterPressed then
-        local username = UsernameBox.Text
-        if username ~= "" then
-            local success, userId = pcall(function()
-                return Players:GetUserIdFromNameAsync(username)
-            end)
-            if success then
-                local thumbType = Enum.ThumbnailType.HeadShot
-                local thumbSize = Enum.ThumbnailSize.Size180x180
-                local content, isReady = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
-                PlayerIcon.Image = content
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "Trade Assist",
-                    Text = "Loaded profile for: "..username,
-                    Duration = 2,
-                })
-            else
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "Trade Assist",
-                    Text = "Invalid username.",
-                    Duration = 2,
-                })
-            end
-        end
-    end
+	if enterPressed then
+		local username = UsernameBox.Text
+		if username ~= "" then
+			local success, userId = pcall(function()
+				return Players:GetUserIdFromNameAsync(username)
+			end)
+			if success then
+				local thumbType = Enum.ThumbnailType.HeadShot
+				local thumbSize = Enum.ThumbnailSize.Size180x180
+				local content, isReady = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
+				PlayerIcon.Image = content
+				StarterGui:SetCore("SendNotification", {
+					Title = "Trade Assist",
+					Text = "Loaded profile for: "..username,
+					Duration = 2,
+				})
+			else
+				StarterGui:SetCore("SendNotification", {
+					Title = "Trade Assist",
+					Text = "Invalid username.",
+					Duration = 2,
+				})
+			end
+		end
+	end
 end)
